@@ -71,7 +71,7 @@ namespace OpenHardwareMonitor.Hardware.CPU {
 
     public CPULoad(CPUID[][] cpuid) {
       this.cpuid = cpuid;
-      this.coreLoads = new float[cpuid.Length];         
+      this.coreLoads = new float[cpuid.Length * cpuid[0].Length];
       this.totalLoad = 0;
       try {
         GetTimes(out idleTimes, out totalTimes);
@@ -115,21 +115,21 @@ namespace OpenHardwareMonitor.Hardware.CPU {
       float total = 0;
       int count = 0;
       for (int i = 0; i < cpuid.Length; i++) {
-        float value = 0;
         for (int j = 0; j < cpuid[i].Length; j++) {
+          float value = 0;
           long index = cpuid[i][j].Thread;
           if (index < newIdleTimes.Length && index < totalTimes.Length) {
             float idle = 
               (float)(newIdleTimes[index] - this.idleTimes[index]) /
               (float)(newTotalTimes[index] - this.totalTimes[index]);
-            value += idle;
+            value = idle;
             total += idle;
             count++;
           }
+          value = 1.0f - value;
+          value = value < 0 ? 0 : value;
+          coreLoads[index] = value * 100;
         }
-        value = 1.0f - value / cpuid[i].Length;
-        value = value < 0 ? 0 : value;
-        coreLoads[i] = value * 100;
       }
       if (count > 0) {
         total = 1.0f - total / count;

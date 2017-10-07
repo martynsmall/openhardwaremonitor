@@ -27,6 +27,7 @@ namespace OpenHardwareMonitor.Hardware.CPU {
 
     protected readonly int processorIndex;
     protected readonly int coreCount;
+    protected readonly int coreThreadCount;
 
     private readonly bool hasModelSpecificRegisters;
 
@@ -53,6 +54,16 @@ namespace OpenHardwareMonitor.Hardware.CPU {
         return "CPU Core #" + (i + 1);
     }
 
+    private string CoreThreadString(int i) {
+      if (coreThreadCount == 1)
+        return CoreString(i);
+
+      if (coreCount == 1)
+        return "CPU Core - Thread #" + (i + 1);
+      else
+        return "CPU Core #" + ((i / coreThreadCount) + 1) + " - Thread #" + ((i % coreThreadCount) + 1);
+    }
+
     public GenericCPU(int processorIndex, CPUID[][] cpuid, ISettings settings)
       : base(cpuid[0][0].Name, CreateIdentifier(cpuid[0][0].Vendor, 
       processorIndex), settings)
@@ -66,7 +77,8 @@ namespace OpenHardwareMonitor.Hardware.CPU {
       this.stepping = cpuid[0][0].Stepping;
 
       this.processorIndex = processorIndex;
-      this.coreCount = cpuid.Length;  
+      this.coreCount = cpuid.Length;
+      this.coreThreadCount = cpuid[0].Length;
   
       // check if processor has MSRs
       if (cpuid[0][0].Data.GetLength(0) > 1
@@ -89,13 +101,13 @@ namespace OpenHardwareMonitor.Hardware.CPU {
       else
         isInvariantTimeStampCounter = false;
 
-      if (coreCount > 1)
+      if (coreCount > 1 || coreThreadCount > 1)
         totalLoad = new Sensor("CPU Total", 0, SensorType.Load, this, settings);
       else
         totalLoad = null;
-      coreLoads = new Sensor[coreCount];
+      coreLoads = new Sensor[coreCount * coreThreadCount];
       for (int i = 0; i < coreLoads.Length; i++)
-        coreLoads[i] = new Sensor(CoreString(i), i + 1,
+        coreLoads[i] = new Sensor(CoreThreadString(i), i + 1,
           SensorType.Load, this, settings);
       cpuLoad = new CPULoad(cpuid);
       if (cpuLoad.IsAvailable) {
