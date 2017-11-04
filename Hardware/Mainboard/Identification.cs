@@ -180,6 +180,8 @@ namespace OpenHardwareMonitor.Hardware.Mainboard {
           return Model.X38_DS5;
         case "X58A-UD3R":
           return Model.X58A_UD3R;
+        case "Z270 PC MATE (MS-7A72)":
+          return Model.Z270_PC_MATE;
         case "Z68A-D3H-B3":
           return Model.Z68A_D3H_B3;
         case "Z68AP-D3":
