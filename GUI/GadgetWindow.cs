@@ -233,7 +233,9 @@ namespace OpenHardwareMonitor.GUI {
 
     private void DisposeBuffer() {
       graphics.Dispose();
+      IntPtr hBmp = NativeMethods.GetCurrentObject(handleBitmapDC, OBJ_BITMAP);
       NativeMethods.DeleteDC(handleBitmapDC);
+      NativeMethods.DeleteObject(hBmp);
     }
 
     public virtual void Dispose() {
@@ -448,6 +450,8 @@ namespace OpenHardwareMonitor.GUI {
     public const int TPM_RIGHTBUTTON = 0x0002;
     public const int TPM_VERTICAL = 0x0040;
 
+    public const int OBJ_BITMAP = 0x0007;
+
     private enum WindowAttribute : int {
       DWMWA_NCRENDERING_ENABLED = 1,
       DWMWA_NCRENDERING_POLICY,
@@ -539,6 +543,9 @@ namespace OpenHardwareMonitor.GUI {
       
       [DllImport(GDI, CallingConvention = CallingConvention.Winapi)]
       public static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
+
+      [DllImport(GDI, CallingConvention = CallingConvention.Winapi)]
+      public static extern IntPtr GetCurrentObject(IntPtr hDC, uint uType);
 
       [DllImport(GDI, CallingConvention = CallingConvention.Winapi)]
       [return: MarshalAs(UnmanagedType.Bool)]

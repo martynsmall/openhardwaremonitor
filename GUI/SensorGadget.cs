@@ -135,7 +135,7 @@ namespace OpenHardwareMonitor.GUI {
       MenuItem hardwareNamesItem = new MenuItem("Hardware Names");
       contextMenu.MenuItems.Add(hardwareNamesItem);
       MenuItem fontSizeMenu = new MenuItem("Font Size");
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < 5; i++) {
         float size;
         string name;
         switch (i) {
@@ -143,6 +143,7 @@ namespace OpenHardwareMonitor.GUI {
           case 1: size = 7.5f; name = "Medium"; break;
           case 2: size = 9f; name = "Large"; break;
           case 3: size = 11f; name = "Very Large"; break;
+          case 4: size = 26f; name = "Massive"; break;
           default: throw new NotImplementedException();
         }
         MenuItem item = new MenuItem(name);
@@ -572,6 +573,9 @@ namespace OpenHardwareMonitor.GUI {
                   break;
                 case SensorType.Data:
                   format = "{0:F1} GB";
+                  break;
+                case SensorType.SmallData:
+                  format = "{0:F1} MB";
                   break;
                 case SensorType.Factor:
                   format = "{0:F3}";
