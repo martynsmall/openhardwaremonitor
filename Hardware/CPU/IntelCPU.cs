@@ -28,7 +28,8 @@ namespace OpenHardwareMonitor.Hardware.CPU {
       Silvermont,
       Skylake,
       Airmont,
-      KabyLake
+      KabyLake,
+      CoffeeLake
     }
 
     private readonly Sensor[] coreTemperatures;
@@ -177,9 +178,17 @@ namespace OpenHardwareMonitor.Hardware.CPU {
                 microarchitecture = Microarchitecture.Airmont;
                 tjMax = GetTjMaxFromMSR();
                 break;
-              case 0x8E: 
-              case 0x9E: // Intel Core i5, i7 7xxxx (14nm)
-                microarchitecture = Microarchitecture.KabyLake;
+              case 0x8E:
+              case 0x9E: // Intel Core i3, i5, i7 7xxxx, 8xxxx (14nm)
+                switch (stepping) {
+                  case 0x09: // B0, S0
+                    microarchitecture = Microarchitecture.KabyLake; break;
+                  case 0x0A:
+                  case 0x0B: // U0, B0
+                    microarchitecture = Microarchitecture.CoffeeLake; break;
+                  default:
+                    microarchitecture = Microarchitecture.Unknown; break;
+                }
                 tjMax = GetTjMaxFromMSR();
                 break;
               default:
@@ -230,7 +239,8 @@ namespace OpenHardwareMonitor.Hardware.CPU {
         case Microarchitecture.Silvermont:
         case Microarchitecture.Skylake:
         case Microarchitecture.Airmont:
-        case Microarchitecture.KabyLake: {
+        case Microarchitecture.KabyLake:
+        case Microarchitecture.CoffeeLake: {
             uint eax, edx;
             if (Ring0.Rdmsr(MSR_PLATFORM_INFO, out eax, out edx)) {
               timeStampCounterMultiplier = (eax >> 8) & 0xff;
@@ -290,11 +300,12 @@ namespace OpenHardwareMonitor.Hardware.CPU {
       if (microarchitecture == Microarchitecture.SandyBridge ||
           microarchitecture == Microarchitecture.IvyBridge ||
           microarchitecture == Microarchitecture.Haswell ||
-          microarchitecture == Microarchitecture.Broadwell || 
+          microarchitecture == Microarchitecture.Broadwell ||
           microarchitecture == Microarchitecture.Skylake ||
           microarchitecture == Microarchitecture.Silvermont ||
           microarchitecture == Microarchitecture.Airmont ||
-          microarchitecture == Microarchitecture.KabyLake) 
+          microarchitecture == Microarchitecture.KabyLake ||
+          microarchitecture == Microarchitecture.CoffeeLake)
       {
         powerSensors = new Sensor[energyStatusMSRs.Length];
         lastEnergyTime = new DateTime[energyStatusMSRs.Length];
@@ -412,7 +423,8 @@ namespace OpenHardwareMonitor.Hardware.CPU {
               case Microarchitecture.Broadwell:
               case Microarchitecture.Silvermont:
               case Microarchitecture.Skylake:
-              case Microarchitecture.KabyLake: {
+              case Microarchitecture.KabyLake:
+              case Microarchitecture.CoffeeLake: {
                   uint multiplier = (eax >> 8) & 0xff;
                   coreClocks[i].Value = (float)(multiplier * newBusClock);
                 } break;
