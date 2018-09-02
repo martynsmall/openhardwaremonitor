@@ -81,6 +81,7 @@ namespace OpenHardwareMonitor.Hardware.Mainboard {
     Z68X_UD7_B3,
 
     // MSI
+    B360M_PRO_VDH,
     Z270_PC_MATE,
 
     // Shuttle

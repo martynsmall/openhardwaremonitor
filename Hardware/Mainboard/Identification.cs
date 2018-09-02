@@ -53,6 +53,7 @@ namespace OpenHardwareMonitor.Hardware.Mainboard {
         case "LENOVO":
           return Manufacturer.Lenovo;
         case "Micro-Star International":
+        case "Micro-Star International Co., Ltd.":
         case "MICRO-STAR INTERNATIONAL CO., LTD":
         case "MICRO-STAR INTERNATIONAL CO.,LTD":
         case "MSI":
@@ -180,8 +181,6 @@ namespace OpenHardwareMonitor.Hardware.Mainboard {
           return Model.X38_DS5;
         case "X58A-UD3R":
           return Model.X58A_UD3R;
-        case "Z270 PC MATE (MS-7A72)":
-          return Model.Z270_PC_MATE;
         case "Z68A-D3H-B3":
           return Model.Z68A_D3H_B3;
         case "Z68AP-D3":
@@ -190,6 +189,10 @@ namespace OpenHardwareMonitor.Hardware.Mainboard {
           return Model.Z68X_UD3H_B3;
         case "Z68X-UD7-B3":
           return Model.Z68X_UD7_B3;
+        case "B360M PRO-VDH (MS-7B24)":
+          return Model.B360M_PRO_VDH;
+        case "Z270 PC MATE (MS-7A72)":
+          return Model.Z270_PC_MATE;
         case "FH67":
           return Model.FH67;
         case "Base Board Product Name":

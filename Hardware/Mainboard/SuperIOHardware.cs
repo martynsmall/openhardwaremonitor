@@ -1154,6 +1154,32 @@ namespace OpenHardwareMonitor.Hardware.Mainboard {
           break;
         case Manufacturer.MSI:
           switch (model) {
+            case Model.B360M_PRO_VDH: // NCT6797D
+              v.Add(new Voltage("CPU VCore", 0));
+              v.Add(new Voltage("+5V", 1, 4, 1));
+              v.Add(new Voltage("AVCC", 2, 34, 34));
+              v.Add(new Voltage("3VCC", 3, 34, 34));
+              v.Add(new Voltage("+12V", 4, 11, 1));
+              v.Add(new Voltage("Voltage #6", 5, true));
+              v.Add(new Voltage("CPU I/O", 6));
+              v.Add(new Voltage("3VSB", 7, 34, 34));
+              v.Add(new Voltage("VTT", 9));
+              v.Add(new Voltage("CPU SA", 10));
+              v.Add(new Voltage("Voltage #12", 11, true));
+              v.Add(new Voltage("PCH", 12));
+              v.Add(new Voltage("DRAM", 13, 1, 1));
+              v.Add(new Voltage("Voltage #15", 14, true));
+              t.Add(new Temperature("CPU", 0));
+              t.Add(new Temperature("Auxiliary", 1));
+              t.Add(new Temperature("Motherboard", 2));
+              t.Add(new Temperature("Temperature #1", 5));
+              f.Add(new Fan("CPU Fan", 1));
+              f.Add(new Fan("System Fan #1", 2));
+              f.Add(new Fan("System Fan #2", 3));
+              c.Add(new Ctrl("CPU Fan", 1));
+              c.Add(new Ctrl("System Fan #1", 2));
+              c.Add(new Ctrl("System Fan #2", 3));
+              break;
             case Model.Z270_PC_MATE: // NCT6795D
               v.Add(new Voltage("CPU VCore", 0));
               v.Add(new Voltage("+5V", 1, 4, 1));
