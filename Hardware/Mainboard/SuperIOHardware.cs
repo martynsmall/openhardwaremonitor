@@ -1196,7 +1196,7 @@ namespace OpenHardwareMonitor.Hardware.Mainboard {
               v.Add(new Voltage("DRAM", 13, 1, 1));
               v.Add(new Voltage("Voltage #15", 14, true));
               t.Add(new Temperature("CPU", 0));
-              t.Add(new Temperature("Auxiliary", 1));
+              t.Add(new Temperature("VRM MOS", 1));
               t.Add(new Temperature("Motherboard", 2));
               f.Add(new Fan("Pump Fan", 0));
               f.Add(new Fan("CPU Fan", 1));
